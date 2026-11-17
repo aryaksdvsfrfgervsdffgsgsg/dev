@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tidepool – Image search</title>
+  <meta name="description" content="Tidepool: search a topic and browse images in a responsive grid.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="layout">
+
+    <header class="panel" id="site-header">
+      <div class="brand">
+        <h1 class="brand-name">Tidepool</h1>
+        <p class="tagline">Dip into any topic and fish out the pictures.</p>
+      </div>
+
+      <form class="search" id="search-form" role="search">
+        <label for="search-input" class="search-label">What do you want to see?</label>
+        <div class="search-row">
+          <input type="search" id="search-input" name="q" placeholder="e.g. tide pools, lighthouses" autocomplete="off">
+          <button type="button" id="clear-btn" class="btn-clear" aria-label="Clear search box">Clear</button>
+        </div>
+        <button type="submit" id="search-btn" class="btn-search">Search</button>
+      </form>
+
+      <section class="picks" aria-labelledby="picks-title">
+        <h2 id="picks-title" class="picks-title">Quick picks</h2>
+        <ul class="chips" id="quick-picks">
+          <li><button type="button" class="chip" data-topic="Coastlines">Coastlines</button></li>
+          <li><button type="button" class="chip" data-topic="Night cities">Night cities</button></li>
+          <li><button type="button" class="chip" data-topic="Wildlife">Wildlife</button></li>
+          <li><button type="button" class="chip" data-topic="Street food">Street food</button></li>
+          <li><button type="button" class="chip" data-topic="Architecture">Architecture</button></li>
+        </ul>
+      </section>
+    </header>
+
+    <main class="stage" id="main">
+      <p class="result-count" id="result-count" aria-live="polite">Showing 0 results</p>
+
+      <div class="empty-state" id="empty-state">
+        <p class="empty-title">Nothing here yet</p>
+        <p class="empty-text">Type a topic or pick a chip, then press Search. Your images will land here.</p>
+      </div>
+
+      <!-- Part 2 fills this container with image cards. Keep it empty. -->
+      <div class="results-grid" id="results" aria-live="polite"></div>
+    </main>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

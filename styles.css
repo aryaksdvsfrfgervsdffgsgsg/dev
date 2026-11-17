@@ -1,0 +1,227 @@
+/* Tidepool – Part 1: styled UI, no behaviour yet */
+
+:root {
+  --bg: #e9f3f1;
+  --surface: #ffffff;
+  --panel: #0e2f33;
+  --panel-text: #e9f3f1;
+  --panel-muted: #9cc3bf;
+  --ink: #0e2f33;
+  --muted: #4e6f6c;
+  --line: #c3dad6;
+  --accent: #f2b84b;
+  --accent-ink: #2a1c00;
+  --focus: #0b7a75;
+
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --font-body: ui-rounded, "Avenir Next", "Segoe UI", system-ui, sans-serif;
+
+  --card-min: 220px;
+  --gap: 1.25rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #081d20;
+    --surface: #0f2b2f;
+    --panel: #05373b;
+    --panel-text: #e4f2f0;
+    --panel-muted: #8fb9b5;
+    --ink: #e4f2f0;
+    --muted: #8fb9b5;
+    --line: #1f4a4e;
+    --focus: #f2b84b;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.5;
+}
+
+/* Two columns: sticky control panel + results stage */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 22rem) 1fr;
+  min-height: 100vh;
+}
+
+.panel {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 2rem 1.5rem;
+  background: var(--panel);
+  color: var(--panel-text);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.brand-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.tagline {
+  margin: 0.6rem 0 0;
+  color: var(--panel-muted);
+  max-width: 26ch;
+}
+
+/* Search */
+.search { display: flex; flex-direction: column; gap: 0.75rem; }
+
+.search-label { font-weight: 600; }
+
+.search-row { position: relative; }
+
+#search-input {
+  width: 100%;
+  padding: 0.8rem 4.5rem 0.8rem 1rem;
+  font: inherit;
+  color: #0e2f33;
+  background: #f4fbfa;
+  border: 2px solid transparent;
+  border-radius: 0.6rem;
+}
+
+#search-input::placeholder { color: #5d807c; }
+
+.btn-clear {
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  transform: translateY(-50%);
+  padding: 0.3rem 0.6rem;
+  font: inherit;
+  font-size: 0.85rem;
+  color: #35575a;
+  background: transparent;
+  border: 0;
+  border-radius: 0.4rem;
+  cursor: pointer;
+}
+
+.btn-clear:hover { background: #d9ebe8; }
+
+.btn-search {
+  padding: 0.85rem 1rem;
+  font: inherit;
+  font-weight: 700;
+  color: var(--accent-ink);
+  background: var(--accent);
+  border: 0;
+  border-radius: 0.6rem;
+  cursor: pointer;
+}
+
+.btn-search:hover { filter: brightness(1.07); }
+.btn-search:active { transform: translateY(1px); }
+
+:is(#search-input, .btn-clear, .btn-search, .chip):focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Quick picks */
+.picks-title {
+  margin: 0 0 0.6rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--panel-muted);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  padding: 0.4rem 0.85rem;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--panel-text);
+  background: transparent;
+  border: 1px solid #3d7a7a;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.chip:hover { background: #0e4a4e; border-color: var(--accent); }
+
+/* Results stage */
+.stage {
+  padding: 2rem clamp(1rem, 3vw, 2.5rem);
+  min-width: 0;
+}
+
+.result-count {
+  margin: 0 0 1.25rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.empty-state {
+  max-width: 34rem;
+  padding: 2rem;
+  border: 2px dashed var(--line);
+  border-radius: 1rem;
+}
+
+.empty-title {
+  margin: 0 0 0.25rem;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+}
+
+.empty-text { margin: 0; color: var(--muted); }
+
+/* Responsive grid: as many columns as fit, re-flows on small screens */
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr));
+  gap: var(--gap);
+  margin-top: var(--gap);
+}
+
+/* Narrow screens: panel stacks on top and stops being sticky-full-height */
+@media (max-width: 760px) {
+  .layout { grid-template-columns: 1fr; }
+
+  .panel {
+    position: sticky;
+    height: auto;
+    max-height: none;
+    padding: 1rem;
+    gap: 1rem;
+    z-index: 5;
+  }
+
+  .brand-name { font-size: 1.9rem; }
+  .tagline { max-width: none; margin-top: 0.3rem; }
+  .picks { display: none; }
+}
+
+@media (max-width: 760px) and (min-width: 480px) {
+  .picks { display: block; }
+}
+
+@media (max-width: 420px) {
+  :root { --card-min: 150px; --gap: 0.75rem; }
+}
